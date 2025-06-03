@@ -1,4 +1,4 @@
- # Swirl Lesson 1: Workspace and Files
+ # Swirl Lesson 2: Workspace and Files
 **Completed on:** June 3, 2025  
 **Platform:** Windows (R version 4.5.0)  
 **Course:** R Programming  
