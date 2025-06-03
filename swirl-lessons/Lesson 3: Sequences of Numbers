@@ -1,0 +1,57 @@
+# Swirl Lesson 3: Sequences of Numbers
+**Completed on:** June 3, 2025  
+**Platform:** Windows (R version 4.5.0)  
+**Course:** R Programming  
+**Lesson:** Sequences of Numbers
+
+---
+
+## ✅ Key Commands Learned
+
+```r
+# Sequence using colon operator
+1:20
+pi:10
+15:1
+
+# Help for operators
+?`:`
+
+# Create sequences with more control
+seq(1, 20)
+seq(0, 10, by = 0.5)
+my_seq <- seq(5, 10, length = 30)
+length(my_seq)
+
+# Sequence based on another vector
+1:length(my_seq)
+seq(along.with = my_seq)
+seq_along(my_seq)
+
+# Replicate elements
+rep(0, times = 40)
+rep(c(0, 1, 2), times = 10)
+rep(c(0, 1, 2), each = 10)
+
+# Simple sequence from 1 to 20
+1:20
+
+# Real number sequence starting from pi
+pi:10
+
+# Backwards sequence
+15:1
+
+# Custom increments
+seq(0, 10, by = 0.5)
+
+# Sequence with specific length
+my_seq <- seq(5, 10, length = 30)
+
+# Index sequence matching vector length
+seq_along(my_seq)
+
+# Repetition
+rep(0, times = 40)
+rep(c(0, 1, 2), times = 10)
+rep(c(0, 1, 2), each = 10)
