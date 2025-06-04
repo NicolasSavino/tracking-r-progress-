@@ -1,0 +1,46 @@
+# Basic R Practice: Vectors and Output
+
+This script demonstrates how to create numeric and character vectors in R, useful for anyone just getting started with the language.
+
+## 📌 Concepts Practiced
+
+- Using `c()` to create vectors
+- Storing numeric and character data
+- Using `paste()` to concatenate character strings
+- Printing output in the R console
+- Handling potential sink() errors
+
+Code Breakdown
+
+```r
+# Create a numeric vector
+num_vect <- c(0.5, 55, -10, 6)
+
+# Create a character vector
+my_char <- c("My", "name", "is")
+
+# Combine character vector into a single string
+full_sentence <- paste(my_char, collapse = " ")
+
+# Output everything to console
+print(num_vect)
+print(my_char)
+print(full_sentence)
+
+# Numeric vector containing 0.5, 55, -10, and 6
+num_vect <- c(0.5, 55, -10, 6)
+
+# Character vector containing the words "My", "name", "is"
+my_char <- c("My", "name", "is")
+
+# Optional: Combine into a sentence
+full_sentence <- paste(my_char, collapse = " ")
+
+# Print everything
+print(num_vect)
+print(my_char)
+print(full_sentence)
+
+# Just in case you were getting file errors, close any sink() connections
+sink()
+
