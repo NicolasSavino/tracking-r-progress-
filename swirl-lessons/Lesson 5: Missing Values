@@ -1,0 +1,53 @@
+# R Programming: Missing Data and Logical Evaluation
+
+This script explores how R handles **missing values** (`NA`) and **undefined numeric operations** (`NaN`).
+
+### Missing Values in R
+
+- `NA` represents missing data.
+- Any operation involving `NA` will usually return `NA`.
+
+```r
+x <- c(44, NA, 5, NA)
+x * 3
+# Output: 132 NA 15 NA
+
+# Create a vector with numeric values and NAs
+x <- c(44, NA, 5, NA)
+
+# Multiply the vector by 3 to observe NA behavior
+x * 3
+
+# Generate 1000 random numbers from a normal distribution
+y <- rnorm(1000)
+
+# Create a vector with 1000 NA values
+z <- rep(NA, 1000)
+
+# Sample 100 values randomly from combined y and z
+my_data <- sample(c(y, z), 100)
+
+# Use is.na() to create a logical vector that identifies NA positions
+my_na <- is.na(my_data)
+
+# View which elements are NA
+print(my_na)
+
+# Demonstrate what happens when trying to compare NA using ==
+my_data == NA  # returns all NA, not TRUE/FALSE
+
+# Count the number of NAs using sum() since TRUE = 1 and FALSE = 0
+sum(my_na)
+
+# View the full data to confirm the placement of NA values
+print(my_data)
+
+# Explore behavior of NaN (Not a Number)
+0 / 0       # Results in NaN
+
+# Subtract infinity from infinity
+Inf - Inf   # Also results in NaN
+
+# Just in case: close any open file output sinks (fixes the 'cannot open the connection' error)
+sink()
+
