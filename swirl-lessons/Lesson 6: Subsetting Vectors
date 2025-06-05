@@ -1,0 +1,65 @@
+# View the full x vector
+x
+
+# View the first 10 elements of x
+x[1:10]
+
+# Identify which elements of x are NA
+is.na(x)
+
+# Subset x to return only the NA values
+x[is.na(x)]
+
+# Subset x to return only non-NA values
+y <- x[!is.na(x)]
+
+# View y
+y
+
+# Subset y to get all positive values
+y[y > 0]
+
+# Subset x directly for positive values (shows NA where applicable)
+x[x > 0]
+
+# Subset x for values that are non-NA AND positive
+x[!is.na(x) & x > 0]
+
+# Subset the 3rd, 5th, and 7th elements of x
+x[c(3, 5, 7)]
+
+# Subset the 0th element of x (returns nothing)
+x[0]
+
+# Subset an out-of-bounds element (returns NA)
+x[3000]
+
+# Subset all elements of x except the 2nd and 10th
+x[c(-2, -10)]
+
+# Same result using shorthand
+x[-c(2, 10)]
+
+# Create a named vector
+vect <- c(foo = 11, bar = 2, norf = NA)
+
+# View vect
+vect
+
+# Get names of vect
+names(vect)
+
+# Create an unnamed vector
+vect2 <- c(11, 2, NA)
+
+# Add names to vect2
+names(vect2) <- c("foo", "bar", "norf")
+
+# Compare vect and vect2
+identical(vect, vect2)
+
+# Subset vect by the name "bar"
+vect["bar"]
+
+# Subset vect by multiple names
+vect[c("foo", "bar")]
