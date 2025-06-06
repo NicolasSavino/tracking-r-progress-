@@ -1,0 +1,53 @@
+# Basic logical comparisons
+TRUE == TRUE
+(FALSE == TRUE) == FALSE
+6 == 7
+6 < 7
+10 <= 10
+9 >= 10
+-6 > -7
+5 != 7
+!(5 == 7)
+
+# Logical NOT, AND, OR
+!FALSE
+!(0 >= -1)
+(TRUE != FALSE) == !(6 == 7)
+
+# AND (&) and vectorized AND
+FALSE & FALSE
+TRUE & c(TRUE, FALSE, FALSE)
+
+# OR (|) and vectorized OR
+TRUE | c(TRUE, FALSE, FALSE)
+TRUE || c(TRUE, FALSE, FALSE)
+
+# Logical operator precedence
+5 > 8 || 6 != 8 && 4 > 3.9
+
+# isTRUE() examples
+isTRUE(6 > 4)
+!isTRUE(4 < 3)
+
+# identical()
+identical('twins', 'twins')
+identical(5 > 4, 3 < 3.1)
+
+# xor() examples
+xor(5 == 6, !FALSE)
+xor(4 >= 9, 8 != 8.0)   # Evaluates to FALSE
+
+# Working with integer vectors
+ints <- sample(10)     # Random integers from 1 to 10
+ints                   # View vector
+
+# Logical comparisons on vectors
+ints > 5
+which(ints > 7)
+which(ints <= 2)
+
+# any() and all()
+any(ints < 0)
+all(ints > 0)
+any(ints == 10)
+all(c(TRUE, FALSE, TRUE))
