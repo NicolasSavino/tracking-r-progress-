@@ -1,0 +1,48 @@
+# Create a vector with numbers 1 through 20
+my_vector <- 1:20
+
+# View contents
+my_vector
+
+# Check dimensions
+dim(my_vector)          # NULL
+length(my_vector)       # 20
+
+# Convert vector to matrix (4 rows, 5 columns)
+dim(my_vector) <- c(4, 5)
+
+# Confirm it’s now a matrix
+dim(my_vector)
+attributes(my_vector)
+class(my_vector)        # "matrix" "array"
+
+# Store in a new variable
+my_matrix <- my_vector
+
+# Create the same matrix using matrix()
+my_matrix2 <- matrix(1:20, nrow = 4, ncol = 5)
+
+# Check if the two matrices are identical
+identical(my_matrix, my_matrix2)  # TRUE
+
+# Add patient names
+patients <- c("Bill", "Gina", "Kelly", "Sean")
+
+# Combine names and matrix using cbind() (results in character matrix)
+cbind(patients, my_matrix)
+
+# Use data.frame() to keep mixed types (names + numbers)
+my_data <- data.frame(patients, my_matrix)
+
+# View the data frame
+my_data
+
+# Confirm it's a data frame
+class(my_data)  # "data.frame"
+
+# Rename columns
+cnames <- c("patient", "age", "weight", "bp", "rating", "test")
+colnames(my_data) <- cnames
+
+# View final result
+my_data
