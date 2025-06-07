@@ -1,0 +1,48 @@
+# 1. A function that returns its input
+boring_function <- function(x) {
+  x
+}
+
+# 2. A custom implementation of the mean() function
+my_mean <- function(x) {
+  sum(x) / length(x)
+}
+
+# 3. A function with a default argument
+remainder <- function(num, divisor = 2) {
+  num %% divisor
+}
+
+# 4. A function that accepts another function as input
+evaluate <- function(func, dat) {
+  func(dat)
+}
+
+# 5. Anonymous function examples (used in evaluate)
+evaluate(function(x) x[1], c(8, 4, 0))           # returns first element
+evaluate(function(x) x[length(x)], c(8, 4, 0))   # returns last element
+
+# 6. A function using ellipses (...)
+telegram <- function(...) {
+  paste("START", ..., "STOP")
+}
+
+# 7. A function that unpacks arguments from ellipses
+mad_libs <- function(...) {
+  args <- list(...)
+  place <- args[["place"]]
+  adjective <- args[["adjective"]]
+  noun <- args[["noun"]]
+  
+  paste("News from", place, "today where", adjective,
+        "students took to the streets in protest of the new",
+        noun, "being installed on campus.")
+}
+
+# 8. A custom binary operator that pastes strings with a space
+"%p%" <- function(left, right) {
+  paste(left, right)
+}
+
+# Example use of custom operator
+"I" %p% "love" %p% "R!"  # Returns: "I love R!"
