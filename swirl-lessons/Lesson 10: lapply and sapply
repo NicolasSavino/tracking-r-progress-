@@ -1,0 +1,41 @@
+# R Loop Functions: lapply() and sapply() on the Flags Dataset
+
+# Preview the dataset
+head(flags)
+dim(flags)       # 194 rows, 30 columns
+class(flags)     # Entire dataset is a data frame
+
+# Get the class of each column
+cls_list <- lapply(flags, class)       # Returns a list
+cls_vect <- sapply(flags, class)       # Returns a character vector
+
+# Extract color indicator columns (columns 11–17)
+flag_colors <- flags[, 11:17]
+head(flag_colors)
+
+# Sum of each color (how many flags include the color)
+lapply(flag_colors, sum)
+sapply(flag_colors, sum)
+
+# Proportion of flags containing each color (mean of binary columns)
+sapply(flag_colors, mean)
+
+# Extract shape/design columns (columns 19–23)
+flag_shapes <- flags[, 19:23]
+
+# Range (min and max) of each shape count
+lapply(flag_shapes, range)
+shape_mat <- sapply(flag_shapes, range)
+class(shape_mat)  # Confirm it's a matrix
+
+# Find unique values in each column of the flags dataset
+unique_vals <- lapply(flags, unique)
+
+# Count how many unique values each column has
+sapply(unique_vals, length)
+
+# Use sapply on unique() – output remains a list due to varying lengths
+sapply(flags, unique)
+
+# Extract the second element from each column’s unique values (anonymous function)
+lapply(unique_vals, function(elem) elem[2])
