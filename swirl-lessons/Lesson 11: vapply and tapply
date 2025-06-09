@@ -1,0 +1,28 @@
+# Load the dataset
+viewinfo()  # View metadata and structure of the dataset
+
+# Use sapply to get unique values in each column
+sapply(flags, unique)
+
+# Use sapply to get the class of each column
+sapply(flags, class)
+
+# Use vapply to explicitly specify expected output type
+vapply(flags, class, character(1))
+
+# Compare sapply vs. vapply
+sapply(flags, class)
+vapply(flags, class, character(1))
+
+# Use table to see distribution of values in specific columns
+table(flags$landmass)
+table(flags$animate)
+
+# Use tapply to find proportion of animate flags per landmass
+tapply(flags$animate, flags$landmass, mean)
+
+# Use tapply to summarize population based on presence of red in flag
+tapply(flags$population, flags$red, summary)
+
+# Use tapply to summarize population for each landmass
+tapply(flags$population, flags$landmass, summary)
