@@ -1,0 +1,38 @@
+# View the current objects in the workspace
+ls()
+
+# Check the class of the 'plants' dataset
+class(plants)
+
+# Check dimensions (rows and columns)
+dim(plants)
+
+# Get the number of rows only
+nrow(plants)
+
+# Get the number of columns only
+ncol(plants)
+
+# Check how much memory the dataset uses
+object.size(plants)
+
+# View the column names
+names(plants)
+
+# Preview the first few rows
+head(plants)
+
+# Preview the first 10 rows
+head(plants, 10)
+
+# Preview the last 15 rows
+tail(plants, 15)
+
+# Summary of all variables (numeric + categorical)
+summary(plants)
+
+# Frequency table of values in the Active_Growth_Period column
+table(plants$Active_Growth_Period)
+
+# Structure of the 'plants' dataset (overview of all variables)
+str(plants)
