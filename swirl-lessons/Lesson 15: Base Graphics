@@ -1,0 +1,158 @@
+Box Plots
+Description
+Produce box-and-whisker plot(s) of the given (grouped) values.
+Usage
+boxplot(x, ...)
+
+## S3 method for class 'formula'
+boxplot(formula, data = NULL, ..., subset, na.action = NULL,
+        xlab = mklab(y_var = horizontal),
+        ylab = mklab(y_var =!horizontal),
+        add = FALSE, ann = !add, horizontal = FALSE,
+        drop = FALSE, sep = ".", lex.order = FALSE)
+
+## Default S3 method:
+boxplot(x, ..., range = 1.5, width = NULL, varwidth = FALSE,
+        notch = FALSE, outline = TRUE, names, plot = TRUE,
+        border = par("fg"), col = "lightgray", log = "",
+        pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5),
+         ann = !add, horizontal = FALSE, add = FALSE, at = NULL)
+
+
+Arguments
+formula
+a formula, such as y ~ grp, where y is a numeric vector of data values to be split into groups according to the grouping variable grp (usually a factor). Note that ~ g1 + g2 is equivalent to g1:g2.
+data
+a data.frame (or list) from which the variables in formula should be taken.
+subset
+an optional vector specifying a subset of observations to be used for plotting.
+na.action
+a function which indicates what should happen when the data contain NAs. The default is to ignore missing values in either the response or the group.
+xlab, ylab
+x- and y-axis annotation, since R 3.6.0 with a non-empty default. Can be suppressed by ann=FALSE.
+ann
+logical indicating if axes should be annotated (by xlab and ylab).
+drop, sep, lex.order
+passed to split.default, see there.
+x
+for specifying data from which the boxplots are to be produced. Either a numeric vector, or a single list containing such vectors. Additional unnamed arguments specify further data as separate vectors (each corresponding to a component boxplot). NAs are allowed in the data.
+...
+For the formula method, named arguments to be passed to the default method.
+For the default method, unnamed arguments are additional data vectors (unless x is a list when they are ignored), and named arguments are arguments and graphical parameters to be passed to bxp in addition to the ones given by argument pars (and override those in pars). Note that bxp may or may not make use of graphical parameters it is passed: see its documentation.
+range
+this determines how far the plot whiskers extend out from the box. If range is positive, the whiskers extend to the most extreme data point which is no more than range times the interquartile range from the box. A value of zero causes the whiskers to extend to the data extremes.
+width
+a vector giving the relative widths of the boxes making up the plot.
+varwidth
+if varwidth is TRUE, the boxes are drawn with widths proportional to the square-roots of the number of observations in the groups.
+notch
+if notch is TRUE, a notch is drawn in each side of the boxes. If the notches of two plots do not overlap this is ‘strong evidence’ that the two medians differ (Chambers et al., 1983, p. 62). See boxplot.stats for the calculations used.
+outline
+if outline is not true, the outliers are not drawn (as points whereas S+ uses lines).
+names
+group labels which will be printed under each boxplot. Can be a character vector or an expression (see plotmath).
+boxwex
+a scale factor to be applied to all boxes. When there are only a few groups, the appearance of the plot can be improved by making the boxes narrower.
+staplewex
+staple line width expansion, proportional to box width.
+outwex
+outlier line width expansion, proportional to box width.
+plot
+if TRUE (the default) then a boxplot is produced. If not, the summaries which the boxplots are based on are returned.
+border
+an optional vector of colors for the outlines of the boxplots. The values in border are recycled if the length of border is less than the number of plots.
+col
+if col is non-null it is assumed to contain colors to be used to colour the bodies of the box plots. By default they are in the background colour.
+log
+character indicating if x or y or both coordinates should be plotted in log scale.
+pars
+a list of (potentially many) more graphical parameters, e.g., boxwex or outpch; these are passed to bxp (if plot is true); for details, see there.
+horizontal
+logical indicating if the boxplots should be horizontal; default FALSE means vertical boxes.
+add
+logical, if true add boxplot to current plot.
+at
+numeric vector giving the locations where the boxplots should be drawn, particularly when add = TRUE; defaults to 1:n where n is the number of boxes.
+
+Details
+The generic function boxplot currently has a default method (boxplot.default) and a formula interface (boxplot.formula).
+If multiple groups are supplied either as multiple arguments or via a formula, parallel boxplots will be plotted, in the order of the arguments or the order of the levels of the factor (see factor).
+Missing values are ignored when forming boxplots.
+Value
+List with the following components:
+stats
+a matrix, each column contains the extreme of the lower whisker, the lower hinge, the median, the upper hinge and the extreme of the upper whisker for one group/plot. If all the inputs have the same class attribute, so will this component.
+n
+a vector with the number of (non-NA) observations in each group.
+conf
+a matrix where each column contains the lower and upper extremes of the notch.
+out
+the values of any data points which lie beyond the extremes of the whiskers.
+group
+a vector of the same length as out whose elements indicate to which group the outlier belongs.
+names
+a vector of names for the groups.
+
+References
+Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988). The New S Language. Wadsworth & Brooks/Cole.
+Chambers, J. M., Cleveland, W. S., Kleiner, B. and Tukey, P. A. (1983). Graphical Methods for Data Analysis. Wadsworth & Brooks/Cole.
+Murrell, P. (2005). R Graphics. Chapman & Hall/CRC Press.
+See also boxplot.stats.
+See Also
+boxplot.stats which does the computation, bxp for the plotting and more examples; and stripchart for an alternative (with small data sets).
+Examples
+Run examples
+## boxplot on a formula:
+boxplot(count ~ spray, data = InsectSprays, col = "lightgray")
+# *add* notches (somewhat funny here <--> warning "notches .. outside hinges"):
+boxplot(count ~ spray, data = InsectSprays,
+        notch = TRUE, add = TRUE, col = "blue")
+
+boxplot(decrease ~ treatment, data = OrchardSprays, col = "bisque",
+        log = "y")
+## horizontal=TRUE, switching  y <--> x :
+boxplot(decrease ~ treatment, data = OrchardSprays, col = "bisque",
+        log = "x", horizontal=TRUE)
+
+rb <- boxplot(decrease ~ treatment, data = OrchardSprays, col = "bisque")
+title("Comparing boxplot()s and non-robust mean +/- SD")
+mn.t <- tapply(OrchardSprays$decrease, OrchardSprays$treatment, mean)
+sd.t <- tapply(OrchardSprays$decrease, OrchardSprays$treatment, sd)
+xi <- 0.3 + seq(rb$n)
+points(xi, mn.t, col = "orange", pch = 18)
+arrows(xi, mn.t - sd.t, xi, mn.t + sd.t,
+       code = 3, col = "pink", angle = 75, length = .1)
+
+## boxplot on a matrix:
+mat <- cbind(Uni05 = (1:100)/21, Norm = rnorm(100),
+             `5T` = rt(100, df = 5), Gam2 = rgamma(100, shape = 2))
+boxplot(mat) # directly, calling boxplot.matrix()
+
+## boxplot on a data frame:
+df. <- as.data.frame(mat)
+par(las = 1) # all axis labels horizontal
+boxplot(df., main = "boxplot(*, horizontal = TRUE)", horizontal = TRUE)
+
+## Using 'at = ' and adding boxplots -- example idea by Roger Bivand :
+boxplot(len ~ dose, data = ToothGrowth,
+        boxwex = 0.25, at = 1:3 - 0.2,
+        subset = supp == "VC", col = "yellow",
+        main = "Guinea Pigs' Tooth Growth",
+        xlab = "Vitamin C dose mg",
+        ylab = "tooth length",
+        xlim = c(0.5, 3.5), ylim = c(0, 35), yaxs = "i")
+boxplot(len ~ dose, data = ToothGrowth, add = TRUE,
+        boxwex = 0.25, at = 1:3 + 0.2,
+        subset = supp == "OJ", col = "orange")
+legend(2, 9, c("Ascorbic acid", "Orange juice"),
+       fill = c("yellow", "orange"))
+
+## With less effort (slightly different) using factor *interaction*:
+boxplot(len ~ dose:supp, data = ToothGrowth,
+        boxwex = 0.5, col = c("orange", "yellow"),
+        main = "Guinea Pigs' Tooth Growth",
+        xlab = "Vitamin C dose mg", ylab = "tooth length",
+        sep = ":", lex.order = TRUE, ylim = c(0, 35), yaxs = "i")
+
+## more examples in  help(bxp)
+
