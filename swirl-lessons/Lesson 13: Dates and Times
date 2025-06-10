@@ -1,0 +1,43 @@
+# Working with Dates and Times in R
+
+# Get the current date and check its class
+d1 <- Sys.Date()
+class(d1)        # "Date"
+unclass(d1)      # Days since 1970-01-01
+print(d1)
+
+# Create a date before 1970 and inspect its internal representation
+d2 <- as.Date("1969-01-01")
+unclass(d2)      # Negative number of days before 1970-01-01
+
+# Get current time (POSIXct format)
+t1 <- Sys.time()
+print(t1)
+class(t1)        # "POSIXct" "POSIXt"
+unclass(t1)      # Seconds since 1970-01-01
+
+# Convert to POSIXlt format (list-style time representation)
+t2 <- as.POSIXlt(Sys.time())
+print(t2)
+class(t2)        # "POSIXlt" "POSIXt"
+unclass(t2)      # List with components: sec, min, hour, etc.
+str(unclass(t2)) # Compact structure
+
+# Extract specific component (e.g., minutes)
+t2$min           # Extract minutes from time
+
+# Use utility functions on Date and Time objects
+weekdays(d1)     # Returns "Tuesday"
+months(t1)       # Returns "June"
+quarters(t2)     # Returns "Q2"
+
+# Convert a character string into a POSIXlt datetime
+t3 <- "October 17, 1986 08:24"
+t4 <- strptime(t3, "%B %d, %Y %H:%M")
+print(t4)
+class(t4)        # "POSIXlt" "POSIXt"
+
+# Time comparisons and arithmetic
+Sys.time() > t1                 # Has time passed since t1?
+Sys.time() - t1                 # Time difference in default units
+difftime(Sys.time(), t1, units = "days")  # Time difference in days
