@@ -1,0 +1,74 @@
+# study_script.R
+# A worked example of data import, cleaning, summary, visualization, and output.
+
+# 0. Install & load dependencies ----
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# 1. Read in a CSV file ----
+# Place your CSV in a folder named 'data' alongside this script.
+raw_data <- read_csv("data/my_data.csv")
+
+# 2. Inspect the data ----
+glimpse(raw_data)         # structure
+summary(raw_data)         # basic stats
+
+# 3. Clean & transform ----
+cleaned <- raw_data %>%
+  filter(!is.na(important_var)) %>%        # drop missing rows
+  mutate(
+    ratio = var1 / var2,                   # create a new variable
+    category = as_factor(category)         # ensure categorical type
+  )
+
+# 4. Compute grouped summary statistics ----
+summary_stats <- cleaned %>%
+  group_by(category) %>%
+  summarise(
+    n        = n(),
+    mean_rat = mean(ratio, na.rm = TRUE),
+    sd_rat   = sd(ratio, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+print(summary_stats)
+
+# 5. Visualize results with ggplot2 ----
+# This will pop up a bar chart with error bars.
+plot <- ggplot(summary_stats, aes(x = category, y = mean_rat)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = mean_rat - sd_rat,
+                    ymax = mean_rat + sd_rat),
+                width = 0.2) +
+  labs(
+    title = "Mean Ratio by Category",
+    x     = "Category",
+    y     = "Mean of var1/var2"
+  ) +
+  theme_minimal()
+
+print(plot)
+
+# 6. Save outputs ----
+# Create an 'output' folder first
+if (!dir.exists("output")) dir.create("output")
+write_csv(summary_stats, "output/summary_stats.csv")
+ggsave("output/mean_by_category.png", plot = plot, width = 6, height = 4)
+
+# 7. Wrap in a reusable function ----
+create_group_summary <- function(df, group_col, target_col) {
+  df %>%
+    group_by({{group_col}}) %>%
+    summarise(
+      count = n(),
+      mean  = mean({{target_col}}, na.rm = TRUE),
+      sd    = sd({{target_col}}, na.rm = TRUE)
+    ) %>%
+    ungroup()
+}
+
+# Example usage:
+# my_stats <- create_group_summary(cleaned, category, ratio)
+# print(my_stats)
