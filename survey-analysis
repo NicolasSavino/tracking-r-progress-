@@ -1,0 +1,88 @@
+# survey_analysis.R
+# Example: Read survey data, compute scale scores, check reliability,
+#           explore correlations, and run a simple regression.
+
+# 0. Install & load packages ----
+pkgs <- c("tidyverse", "psych", "corrplot")
+installed <- rownames(installed.packages())
+for(p in pkgs) if(!p %in% installed) install.packages(p)
+library(tidyverse)
+library(psych)
+library(corrplot)
+
+# 1. Read in survey data ----
+# Assumes your CSV has columns like Q1, Q2, …, Q10 and a demographic col "age"
+df_raw <- read_csv("data/survey_data.csv")
+
+# 2. Select and rename items ----
+# Suppose items Q1–Q5 form Scale A, Q6–Q10 form Scale B
+df_items <- df_raw %>% 
+  select(id, age,
+         A1 = Q1, A2 = Q2, A3 = Q3, A4 = Q4, A5 = Q5,
+         B1 = Q6, B2 = Q7, B3 = Q8, B4 = Q9, B5 = Q10)
+
+# 3. Reverse-code item A4 and B2 (if those were negatively keyed) ----
+df_recoded <- df_items %>%
+  mutate(
+    A4 = recode(A4, `1`=5, `2`=4, `3`=3, `4`=2, `5`=1),
+    B2 = recode(B2, `1`=5, `2`=4, `3`=3, `4`=2, `5`=1)
+  )
+
+# 4. Compute scale scores (mean of items) ----
+df_scored <- df_recoded %>%
+  rowwise() %>%
+  mutate(
+    ScaleA = mean(c_across(A1:A5), na.rm = TRUE),
+    ScaleB = mean(c_across(B1:B5), na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# 5. Check internal consistency (Cronbach’s α) ----
+alpha_A <- psych::alpha(df_recoded %>% select(A1:A5))
+alpha_B <- psych::alpha(df_recoded %>% select(B1:B5))
+print(alpha_A)   # look at $total$raw_alpha
+print(alpha_B)
+
+# 6. Descriptive statistics ----
+df_scored %>%
+  summarise(
+    N       = n(),
+    mean_A  = mean(ScaleA, na.rm=TRUE),
+    sd_A    = sd(ScaleA,   na.rm=TRUE),
+    mean_B  = mean(ScaleB, na.rm=TRUE),
+    sd_B    = sd(ScaleB,   na.rm=TRUE)
+  ) %>%
+  print()
+
+# 7. Correlation matrix & heatmap ----
+cors <- df_scored %>% select(ScaleA, ScaleB, age) %>% cor(use="pairwise.complete.obs")
+print(cors)
+corrplot(cors, method = "ellipse", addCoef.col = "black")
+
+# 8. Simple linear regression ----
+# Predict ScaleB from ScaleA, controlling for age
+model <- lm(ScaleB ~ ScaleA + age, data = df_scored)
+summary(model)
+
+# 9. Save outputs ----
+if (!dir.exists("output")) dir.create("output")
+write_csv(df_scored,   "output/scored_data.csv")
+write_csv(as_tibble(cors),"output/correlations.csv")
+png("output/corrplot.png", width=600, height=600)
+corrplot(cors, method="circle")
+dev.off()
+sink("output/regression_summary.txt")
+print(summary(model))
+sink()
+
+# 10. Function for batch reliability checks ----
+check_alpha <- function(data, prefixes) {
+  for(pref in prefixes) {
+    items <- data %>% select(starts_with(pref))
+    cat("\nReliability for", pref, "items:\n")
+    print(psych::alpha(items)$total$raw_alpha)
+  }
+}
+
+# Example usage:
+# check_alpha(df_recoded
