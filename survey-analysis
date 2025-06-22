@@ -84,5 +84,7 @@ check_alpha <- function(data, prefixes) {
   }
 }
 
+# should show everything now g 
+
 # Example usage:
 # check_alpha(df_recoded
